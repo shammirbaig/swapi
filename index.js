@@ -5,7 +5,13 @@ const cron = require('node-cron');
 
 const starwarsURL = 'https://swapi.dev/api/';
 const app = express();
-const client = redis.createClient(6379);
+const redisHost = process.env.REDIS_HOST || 'localhost';
+const redisPort = process.env.REDIS_PORT || 6379;
+
+let client = redis.createClient({
+  host: redisHost,
+  port: redisPort,
+});
 
 client.on('error', (err) => console.log(err));
 client.connect();
