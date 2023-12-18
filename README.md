@@ -1,5 +1,4 @@
 
-```markdown
 # SWAPI Cache Server using Redis
 
 
