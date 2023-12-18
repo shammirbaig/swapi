@@ -6,13 +6,14 @@ const cron = require('node-cron');
 const starwarsURL = 'https://swapi.dev/api/';
 const app = express();
 const redisURL = process.env.REDIS_URL || 'redis://localhost:6379';
+const client = redis.createClient({
+    url: redisURL
+});
 
 (async () => {
   // Connect to your internal Redis instance using the REDIS_URL environment variable
   // The REDIS_URL is set to the internal Redis URL e.g. redis://red-343245ndffg023:6379
-  const client = redis.createClient({
-      url: redisURL
-  });
+  
 
   client.on('error', (err) => console.log('Redis Client Error', err));
 
