@@ -57,7 +57,7 @@ app.get('/api/:type/:id?', checkCache, async (req, res) => {
 });
 
 
-//cron Job
+//cron Job to clear cache at every midnight 12 am
 cron.schedule('0 0 * * *', () => {
     console.log('Clearing Redis cache...');
     client.flushall((err, succeeded) => {
