@@ -7,12 +7,23 @@ const starwarsURL = 'https://swapi.dev/api/';
 const app = express();
 const redisURL = process.env.REDIS_URL || 'redis://localhost:6379';
 
-let client = redis.createClient(redisURL);
+(async () => {
+  // Connect to your internal Redis instance using the REDIS_URL environment variable
+  // The REDIS_URL is set to the internal Redis URL e.g. redis://red-343245ndffg023:6379
+  const client = redis.createClient({
+      url: redisURL
+  });
 
+  client.on('error', (err) => console.log('Redis Client Error', err));
 
-client.on('error', (err) => console.log(err));
-client.connect();
-client.on('connect', () => console.log('Connected to Redis'));
+  await client.connect();
+
+  // Send and retrieve some values
+  await client.set('key', 'node redis');
+  const value = await client.get('key');
+
+  console.log("found value: ", value)
+})();
 
 app.get('/', (req, res) => {
     res.send('<h1>Hello! Welcome to Redis Cache</h1>');
