@@ -17,9 +17,11 @@ app.get('/', (req, res) => {
 
 const checkCache = async (req, res, next) => {
     const { type, id } = req.params;
+    const { search } = req.query;
+    let cacheKey = id || search;
 
     try {
-        let data = await client.get(`${type}:${id}`);
+        let data = await client.get(`${type}:${cacheKey}`);
         if (!data) {
             return next();
         } else {
@@ -33,14 +35,20 @@ const checkCache = async (req, res, next) => {
 
 app.get('/api/:type/:id?', checkCache, async (req, res) => {
     const { type, id } = req.params;
+    const { search } = req.query;
     try {
-        let url = id ? `${starwarsURL}${type}/${id}` : `${starwarsURL}${type}`;
+        let url;
+        if (id) {
+          url = `${starwarsURL}${type}/${id}`;
+        } else if (search) {
+          url = `${starwarsURL}${type}/?search=${search}`;
+        } else {
+          url = `${starwarsURL}${type}`;
+        }
         let response = await axios(url);
         let data = response.data;
-        if (id) {
-            client.set(`${type}:${id}`, JSON.stringify(data));
-        }
-
+        let cacheKey = id || search;
+        client.set(`${type}:${cacheKey}`, JSON.stringify(data));
         res.json({ data, info: 'Data from 3rd party API' });
     } catch (error) {
         console.error('Error in /api/:type/:id handler:', error);
