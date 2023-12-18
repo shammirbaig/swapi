@@ -7,11 +7,12 @@
 This repository contains a Node.js and Express-based server designed to enhance the performance of the Star Wars API (SWAPI) by leveraging Redis for efficient data caching. Redis, being an in-memory data store, significantly improves response times and reduces server load, resulting in an enhanced user experience.
 
 swapi docs: https://swapi.dev/
+Deployed URL on render: https://swapi-cache-redis-anc.onrender.com/api/people/1
 
 ## Why Redis for Caching?
 
 Redis excels at handling frequently accessed data with low-latency read operations, making it an ideal choice for caching API responses. The decision to use Redis is rooted in its ability to provide high-performance caching, ensuring optimal responsiveness.
-
+s
 ## Functionality
 
 ### Supported Endpoints
